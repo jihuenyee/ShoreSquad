@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     initMobileNav();
     loadSampleEvents();
+    renderEvents();
 });
 
 /**
@@ -198,20 +199,30 @@ function renderEvents() {
 
     eventsList.innerHTML = AppState.events.map(event => `
         <div class="event-card">
-            <div class="event-header">
-                <h3 class="event-title">${escapeHtml(event.title)}</h3>
-                <p class="event-meta">📍 ${escapeHtml(event.location)}</p>
+            <!-- Row 1: Date -->
+            <div style="font-size:0.9rem; color:#6B7280; margin-bottom:0.75rem;">
+                📅 ${event.date}
             </div>
-            <div class="event-body">
-                <p class="event-description">${escapeHtml(event.description)}</p>
-                <p style="font-size: 0.9rem; color: #6B7280;">
-                    📅 ${event.date} at ${event.time}
-                </p>
+            
+            <!-- Row 2: Event Title -->
+            <h3 class="event-title" style="margin:0 0 0.5rem 0; font-size:1.25rem;">
+                ${escapeHtml(event.title)}
+            </h3>
+            
+            <!-- Row 3: Location -->
+            <div style="font-size:0.95rem; color:#374151; margin-bottom:0.75rem;">
+                📍 ${escapeHtml(event.location)}
             </div>
-            <div class="event-footer">
-                <span class="event-count">👥 ${event.attendees} attending</span>
-                <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;" aria-label="Join ${escapeHtml(event.title)}">Join</button>
+            
+            <!-- Row 4: Time -->
+            <div style="font-size:0.95rem; color:#374151; margin-bottom:1rem;">
+                🕐 ${event.time}
             </div>
+            
+            <!-- Row 5: Join Button -->
+            <button class="btn btn-secondary" style="width:100%; padding:0.75rem 1rem; font-size:0.95rem;" aria-label="Join ${escapeHtml(event.title)}">
+                ✋ Join Squad
+            </button>
         </div>
     `).join('');
 }
