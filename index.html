@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShoreSquad: Rally your crew, track weather, and hit the next beach cleanup with our dope map app!">
+    <meta name="theme-color" content="#0EA5E9">
+    <title>ShoreSquad - Beach Cleanup Community</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header / Navigation -->
+    <header class="header">
+        <nav class="navbar" role="navigation" aria-label="main">
+            <div class="navbar-container">
+                <a href="#" class="logo" aria-label="ShoreSquad home">
+                    <span class="logo-icon">🌊</span>
+                    <span class="logo-text">ShoreSquad</span>
+                </a>
+                <button class="nav-toggle" id="navToggle" aria-label="toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#map" class="nav-link">Map</a></li>
+                    <li><a href="#weather" class="nav-link">Weather</a></li>
+                    <li><a href="#crew" class="nav-link">My Crew</a></li>
+                    <li><a href="#events" class="nav-link">Events</a></li>
+                    <li><a href="#" class="nav-link nav-cta">Join Now</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Rally Your Crew. Clean the Shore.</h1>
+            <p class="hero-subtitle">Join thousands making waves for ocean health. Track weather, find crew, organize cleanups.</p>
+            <button class="btn btn-primary" id="heroBtn">Get Started</button>
+        </div>
+        <div class="hero-visual">
+            <div class="wave-animation"></div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Map Section -->
+        <section class="section" id="map">
+            <div class="container">
+                <h2 class="section-title">Find Your Beach</h2>
+                <div class="map-container" id="mapContainer" role="region" aria-label="interactive map">
+                    <div class="map-placeholder">
+                        <p class="placeholder-text">🗺️ Interactive map loading...</p>
+                        <p class="placeholder-sub">Shows nearby beaches, cleanup events, and crew locations</p>
+                    </div>
+                </div>
+                <div class="map-controls" aria-label="map controls">
+                    <button class="btn btn-secondary" id="locateBtn" aria-label="locate your position">📍 Locate Me</button>
+                    <button class="btn btn-secondary" id="filterBtn" aria-label="filter beaches">🔍 Filter</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weather Section -->
+        <section class="section section-alt" id="weather">
+            <div class="container">
+                <h2 class="section-title">Weather Check</h2>
+                <div class="weather-grid" id="weatherGrid" role="region" aria-label="weather information">
+                    <div class="weather-card">
+                        <div class="weather-icon">☀️</div>
+                        <p class="weather-label">Temperature</p>
+                        <p class="weather-value" id="tempValue">72°F</p>
+                    </div>
+                    <div class="weather-card">
+                        <div class="weather-icon">💨</div>
+                        <p class="weather-label">Wind Speed</p>
+                        <p class="weather-value" id="windValue">12 mph</p>
+                    </div>
+                    <div class="weather-card">
+                        <div class="weather-icon">🌊</div>
+                        <p class="weather-label">Wave Height</p>
+                        <p class="weather-value" id="waveValue">2-3 ft</p>
+                    </div>
+                    <div class="weather-card">
+                        <div class="weather-icon">💧</div>
+                        <p class="weather-label">UV Index</p>
+                        <p class="weather-value" id="uvValue">6 (High)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Crew Section -->
+        <section class="section" id="crew">
+            <div class="container">
+                <h2 class="section-title">Rally Your Crew</h2>
+                <div class="crew-container" role="region" aria-label="crew members">
+                    <div class="crew-form">
+                        <form id="crewForm" aria-label="add crew member form">
+                            <label for="crewName">Crew Member Name</label>
+                            <input type="text" id="crewName" placeholder="Enter name" required aria-required="true">
+                            <label for="crewRole">Role</label>
+                            <select id="crewRole" aria-label="crew role">
+                                <option value="lead">Team Lead</option>
+                                <option value="coordinator">Coordinator</option>
+                                <option value="volunteer">Volunteer</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Add Crew</button>
+                        </form>
+                    </div>
+                    <div class="crew-list" id="crewList" role="list">
+                        <!-- Crew members dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section class="section section-alt" id="events">
+            <div class="container">
+                <h2 class="section-title">Upcoming Cleanups</h2>
+                <div class="events-list" id="eventsList" role="region" aria-label="upcoming cleanup events">
+                    <!-- Events dynamically loaded here -->
+                </div>
+                <button class="btn btn-secondary" id="createEventBtn">Create Event</button>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section section-cta">
+            <div class="container">
+                <h2>Ready to Make Waves?</h2>
+                <p>Join ShoreSquad and be part of the ocean-loving community making real impact.</p>
+                <button class="btn btn-primary btn-large">Join the Movement</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ShoreSquad</h4>
+                    <p>Making beach cleanup fun, social, and impactful.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#map">Map</a></li>
+                        <li><a href="#crew">Crew</a></li>
+                        <li><a href="#events">Events</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow</h4>
+                    <ul>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ShoreSquad. Making waves for ocean health. 🌊</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js" defer></script>
+</body>
+</html>
