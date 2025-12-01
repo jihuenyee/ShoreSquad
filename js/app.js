@@ -289,21 +289,34 @@ function renderForecasts(forecasts) {
 
         return `
             <div class="weather-card" role="article" aria-label="Forecast for ${dateStr}">
-                <div style="display:flex; gap:1rem; align-items:center; justify-content:space-between;">
-                    <div style="display:flex; gap:1rem; align-items:center;">
-                        <div class="weather-icon" aria-hidden="true">${icon}</div>
-                        <div>
-                            <div style="font-weight:700;">${weekday}</div>
-                            <div style="font-size:0.95rem;">${dateDisplay}</div>
-                            <div style="margin-top:0.25rem; font-weight:600;">${escapeHtml(forecastText)}</div>
-                        </div>
-                    </div>
-                    <div style="text-align:right; min-width:120px;">
-                        <div style="font-weight:700;">${tempHigh} / ${tempLow}</div>
-                        <div style="font-size:0.9rem; color:#374151;">Wind: ${windLow}–${windHigh}</div>
-                    </div>
+                <!-- Row 1: Icon and Day -->
+                <div style="display:flex; gap:0.75rem; align-items:center; margin-bottom:0.5rem;">
+                    <span class="weather-icon" aria-hidden="true">${icon}</span>
+                    <span style="font-weight:700; font-size:1rem;">${weekday}</span>
                 </div>
-                <div style="margin-top:0.75rem; font-size:0.9rem; color:#6B7280;">
+                
+                <!-- Row 2: Date -->
+                <div style="font-size:0.9rem; color:#374151; margin-bottom:0.5rem;">
+                    ${dateDisplay}
+                </div>
+                
+                <!-- Row 3: Forecast -->
+                <div style="font-weight:600; font-size:0.95rem; margin-bottom:0.5rem; min-height:2.2em;">
+                    ${escapeHtml(forecastText)}
+                </div>
+                
+                <!-- Row 4: Temperature -->
+                <div style="font-weight:700; font-size:1.1rem; color:var(--primary); margin-bottom:0.5rem;">
+                    ${tempHigh} / ${tempLow}
+                </div>
+                
+                <!-- Row 5: Wind -->
+                <div style="font-size:0.9rem; color:#374151; margin-bottom:0.5rem;">
+                    Wind: ${windLow}–${windHigh}
+                </div>
+                
+                <!-- Row 6: Humidity -->
+                <div style="font-size:0.9rem; color:#6B7280;">
                     Humidity: ${humidityLow} – ${humidityHigh}
                 </div>
             </div>
