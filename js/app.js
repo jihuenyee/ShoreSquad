@@ -158,28 +158,28 @@ function createEvent(eventData) {
 function loadSampleEvents() {
     if (AppState.events.length === 0) {
         createEvent({
-            title: 'Sunset Shore Cleanup',
-            location: 'Santa Monica Beach',
-            date: '2024-12-15',
-            time: '5:00 PM',
-            attendees: 12,
-            description: 'Evening cleanup with views! Bring gloves and bags.',
+            title: 'Pasir Ris Community Cleanup',
+            location: 'Pasir Ris Beach, Singapore',
+            date: '2025-12-07',
+            time: '09:00 AM',
+            attendees: 30,
+            description: 'Join the local community at Pasir Ris for beach cleanup and recycling workshops.',
         });
         createEvent({
-            title: 'Marine Life Research & Cleanup',
-            location: 'Malibu Lagoon',
-            date: '2024-12-22',
+            title: 'East Coast Park Morning Cleanup',
+            location: 'East Coast Park, Singapore',
+            date: '2025-12-14',
+            time: '08:00 AM',
+            attendees: 20,
+            description: 'Family-friendly morning cleanup followed by a small picnic. Bring gloves and water.',
+        });
+        createEvent({
+            title: 'Changi Beach Coastal Cleanup',
+            location: 'Changi Beach, Singapore',
+            date: '2025-12-21',
             time: '10:00 AM',
-            attendees: 8,
-            description: 'Help researchers while protecting our coastline.',
-        });
-        createEvent({
-            title: 'New Year, New Shore Initiative',
-            location: 'Huntington Beach',
-            date: '2024-12-31',
-            time: '8:00 AM',
-            attendees: 25,
-            description: 'Kick off 2025 with massive community cleanup!',
+            attendees: 15,
+            description: 'Coastal cleanup focusing on plastic removal and marine debris logging.',
         });
     }
 }
@@ -259,10 +259,27 @@ function renderForecasts(forecasts) {
     const weatherGrid = document.getElementById('weatherGrid');
     if (!weatherGrid) return;
 
+    // Helper: map forecast text to emoji icon
+    function getIcon(text) {
+        if (!text) return '❓';
+        const t = text.toLowerCase();
+        if (t.includes('thunder') || t.includes('thundery') || t.includes('thunderstorm')) return '⛈️';
+        if (t.includes('showers') || t.includes('rain') || t.includes('shower')) return '🌧️';
+        if (t.includes('partly')) return '⛅';
+        if (t.includes('cloud') || t.includes('cloudy')) return '☁️';
+        if (t.includes('fair') || t.includes('sunny') || t.includes('clear')) return '☀️';
+        if (t.includes('wind') || t.includes('breezy')) return '🌬️';
+        return '🌤️';
+    }
+
     // Build cards for each forecast day
     const html = forecasts.map(f => {
-        const date = f.date || '';
+        const dateStr = f.date || '';
+        const dateObj = dateStr ? new Date(dateStr + 'T00:00:00') : null;
+        const weekday = dateObj ? dateObj.toLocaleDateString(undefined, { weekday: 'short' }) : '';
+        const dateDisplay = dateObj ? dateObj.toLocaleDateString() : dateStr;
         const forecastText = f.forecast || '-';
+        const icon = getIcon(forecastText);
         const tempLow = f.temperature && f.temperature.low != null ? `${f.temperature.low}°C` : '-';
         const tempHigh = f.temperature && f.temperature.high != null ? `${f.temperature.high}°C` : '-';
         const windLow = f.wind && f.wind.speed && f.wind.speed.low != null ? `${f.wind.speed.low} km/h` : '-';
@@ -271,13 +288,17 @@ function renderForecasts(forecasts) {
         const humidityHigh = f.relative_humidity && f.relative_humidity.high != null ? `${f.relative_humidity.high}%` : '-';
 
         return `
-            <div class="weather-card" role="article" aria-label="Forecast for ${date}">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <h3 style="margin:0; font-size:1.1rem;">${date}</h3>
-                        <p style="margin:0.25rem 0 0 0; font-weight:600;">${escapeHtml(forecastText)}</p>
+            <div class="weather-card" role="article" aria-label="Forecast for ${dateStr}">
+                <div style="display:flex; gap:1rem; align-items:center; justify-content:space-between;">
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <div class="weather-icon" aria-hidden="true">${icon}</div>
+                        <div>
+                            <div style="font-weight:700;">${weekday}</div>
+                            <div style="font-size:0.95rem;">${dateDisplay}</div>
+                            <div style="margin-top:0.25rem; font-weight:600;">${escapeHtml(forecastText)}</div>
+                        </div>
                     </div>
-                    <div style="text-align:right; min-width:110px;">
+                    <div style="text-align:right; min-width:120px;">
                         <div style="font-weight:700;">${tempHigh} / ${tempLow}</div>
                         <div style="font-size:0.9rem; color:#374151;">Wind: ${windLow}–${windHigh}</div>
                     </div>
