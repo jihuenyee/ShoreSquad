@@ -224,9 +224,10 @@ function renderEvents() {
 function updateWeatherDisplay() {
     // Mock weather data (replace with real API call)
     const weatherData = {
-        temp: '72°F',
-        wind: '12 mph',
-        waves: '2-3 ft',
+        // Converted to metric: °C, km/h, meters
+        temp: '22°C',
+        wind: '19 km/h',
+        waves: '0.6–0.9 m',
         uv: '6 (High)',
     };
 
