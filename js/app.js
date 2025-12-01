@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     initMobileNav();
     loadSampleEvents();
+    loadSampleCrew();
     renderEvents();
 });
 
@@ -112,7 +113,11 @@ function renderCrew() {
         return;
     }
 
-    crewList.innerHTML = AppState.crew.map(member => `
+    // Check if viewing all crew or just first 2
+    const isViewingAll = crewList.dataset.viewAll === 'true';
+    const crewToDisplay = isViewingAll ? AppState.crew : AppState.crew.slice(0, 2);
+
+    crewList.innerHTML = crewToDisplay.map(member => `
         <div class="crew-item" role="listitem">
             <div class="crew-item-info">
                 <h4>${escapeHtml(member.name)}</h4>
@@ -159,29 +164,56 @@ function createEvent(eventData) {
 function loadSampleEvents() {
     if (AppState.events.length === 0) {
         createEvent({
-            title: 'Pasir Ris Community Cleanup',
-            location: 'Pasir Ris Beach, Singapore',
+            title: 'Sentosa Beach Cleanup',
+            location: 'Sentosa Beach, Singapore',
             date: '2025-12-07',
             time: '09:00 AM',
             attendees: 30,
-            description: 'Join the local community at Pasir Ris for beach cleanup and recycling workshops.',
+            description: 'Join the local community at Sentosa Beach for beach cleanup and recycling workshops.',
         });
         createEvent({
-            title: 'East Coast Park Morning Cleanup',
-            location: 'East Coast Park, Singapore',
+            title: 'Pulau Ubin Coastal Cleanup',
+            location: 'Pulau Ubin Beach, Singapore',
             date: '2025-12-14',
             time: '08:00 AM',
             attendees: 20,
             description: 'Family-friendly morning cleanup followed by a small picnic. Bring gloves and water.',
         });
         createEvent({
-            title: 'Changi Beach Coastal Cleanup',
-            location: 'Changi Beach, Singapore',
+            title: 'Kranji Beach Marine Cleanup',
+            location: 'Kranji Beach, Singapore',
             date: '2025-12-21',
             time: '10:00 AM',
             attendees: 15,
             description: 'Coastal cleanup focusing on plastic removal and marine debris logging.',
         });
+    }
+}
+
+/**
+ * Load sample crew members for demo
+ */
+function loadSampleCrew() {
+    if (AppState.crew.length === 0) {
+        const crewMembers = [
+            { name: 'Alex Chen', role: 'lead' },
+            { name: 'Maya Patel', role: 'coordinator' },
+            { name: 'James Wong', role: 'volunteer' },
+            { name: 'Sophie Lee', role: 'volunteer' },
+            { name: 'Ravi Kumar', role: 'lead' },
+            { name: 'Emma Rodriguez', role: 'coordinator' },
+            { name: 'Liam Park', role: 'volunteer' },
+            { name: 'Zara Ahmed', role: 'volunteer' },
+        ];
+        crewMembers.forEach(member => {
+            AppState.crew.push({
+                id: Date.now() + Math.random(),
+                name: member.name,
+                role: member.role,
+                joinedAt: new Date().toISOString(),
+            });
+        });
+        saveCrewToStorage();
     }
 }
 
@@ -232,8 +264,13 @@ function renderEvents() {
                 🕐 ${event.time}
             </div>
             
-            <!-- Row 5: Join Button -->
-            <button class="btn btn-secondary" style="width:100%; padding:0.75rem 1rem; font-size:0.95rem; margin-top:0.5rem;" aria-label="Join ${escapeHtml(event.title)}">
+            <!-- Row 5: Attendee Count -->
+            <div style="font-size:0.9rem; color:#0EA5E9; margin-bottom:1rem; font-weight:600; padding-bottom:1rem; border-bottom:1px solid var(--neutral-dark);">
+                👥 ${event.attendees || 0} members joined
+            </div>
+            
+            <!-- Row 6: Join Button -->
+            <button class="btn btn-secondary" style="width:100%; padding:0.75rem 1rem; font-size:0.95rem; margin-top:1rem;" aria-label="Join ${escapeHtml(event.title)}">
                 ✋ Join Squad
             </button>
         </div>
@@ -380,6 +417,18 @@ function initMobileNav() {
  * Setup all event listeners for interactive elements
  */
 function setupEventListeners() {
+    // View All Crew button
+    const viewAllCrewBtn = document.getElementById('viewAllCrewBtn');
+    if (viewAllCrewBtn) {
+        viewAllCrewBtn.addEventListener('click', () => {
+            const crewList = document.getElementById('crewList');
+            const isViewingAll = crewList.dataset.viewAll === 'true';
+            crewList.dataset.viewAll = isViewingAll ? 'false' : 'true';
+            viewAllCrewBtn.textContent = isViewingAll ? 'View All →' : '← Show Less';
+            renderCrew();
+        });
+    }
+
     // Crew form submission
     const crewForm = document.getElementById('crewForm');
     if (crewForm) {

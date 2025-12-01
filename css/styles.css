@@ -320,21 +320,21 @@ a:hover, a:focus {
 }
 
 .btn-primary {
-    background-color: var(--primary);
+    background-color: #0369A1;
     color: var(--white);
 }
 
 .btn-primary:hover, .btn-primary:focus {
-    background-color: var(--primary-dark);
+    background-color: #0284C7;
 }
 
 .btn-secondary {
-    background-color: var(--secondary);
+    background-color: #0369A1;
     color: var(--white);
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
-    background-color: var(--secondary-dark);
+    background-color: #0284C7;
 }
 
 .btn-large {
@@ -469,10 +469,67 @@ a:hover, a:focus {
     box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
+.crew-list-wrapper {
+    background: var(--neutral);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.crew-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--neutral-dark);
+}
+
+.btn-view-all {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color var(--transition-fast);
+    padding: 0;
+}
+
+.btn-view-all:hover, .btn-view-all:focus {
+    color: var(--primary-dark);
+    outline: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+}
+
 .crew-list {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+    overflow-y: auto;
+    flex: 1;
+    padding-right: var(--spacing-sm);
+}
+
+.crew-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.crew-list::-webkit-scrollbar-track {
+    background: var(--neutral-dark);
+    border-radius: var(--radius-full);
+}
+
+.crew-list::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: var(--radius-full);
+}
+
+.crew-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
 }
 
 .crew-item {

@@ -122,8 +122,14 @@
                             <button type="submit" class="btn btn-primary">Add Crew</button>
                         </form>
                     </div>
-                    <div class="crew-list" id="crewList" role="list">
-                        <!-- Crew members dynamically added here -->
+                    <div class="crew-list-wrapper">
+                        <div class="crew-list-header">
+                            <h3 style="margin: 0; font-size: 1rem;">Current Crew</h3>
+                            <button class="btn-view-all" id="viewAllCrewBtn" aria-label="view all crew members">View All →</button>
+                        </div>
+                        <div class="crew-list" id="crewList" role="list">
+                            <!-- Crew members dynamically added here -->
+                        </div>
                     </div>
                 </div>
             </div>
