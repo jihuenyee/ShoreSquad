@@ -186,6 +186,17 @@ function loadSampleEvents() {
 }
 
 /**
+ * Format date from YYYY-MM-DD to "MMM DD" format
+ * @param {string} dateStr - Date string in YYYY-MM-DD format
+ * @returns {string} Formatted date (e.g., "Dec 22")
+ */
+function formatDateShort(dateStr) {
+    if (!dateStr) return '';
+    const dateObj = new Date(dateStr + 'T00:00:00');
+    return dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+/**
  * Render events to DOM
  */
 function renderEvents() {
@@ -197,34 +208,37 @@ function renderEvents() {
         return;
     }
 
-    eventsList.innerHTML = AppState.events.map(event => `
+    eventsList.innerHTML = AppState.events.map(event => {
+        const formattedDate = formatDateShort(event.date);
+        return `
         <div class="event-card">
             <!-- Row 1: Date -->
-            <div style="font-size:0.9rem; color:#6B7280; margin-bottom:0.75rem;">
-                📅 ${event.date}
+            <div style="font-size:0.9rem; color:#6B7280; margin-bottom:0.75rem; padding:0 0 0.5rem 0; border-bottom:1px solid var(--neutral-dark);">
+                📅 ${formattedDate}
             </div>
             
             <!-- Row 2: Event Title -->
-            <h3 class="event-title" style="margin:0 0 0.5rem 0; font-size:1.25rem;">
+            <h3 class="event-title" style="margin:0.75rem 0 0.5rem 0; font-size:1.25rem; font-weight:700;">
                 ${escapeHtml(event.title)}
             </h3>
             
             <!-- Row 3: Location -->
-            <div style="font-size:0.95rem; color:#374151; margin-bottom:0.75rem;">
+            <div style="font-size:0.95rem; color:#374151; margin-bottom:0.75rem; padding:0.5rem 0;">
                 📍 ${escapeHtml(event.location)}
             </div>
             
             <!-- Row 4: Time -->
-            <div style="font-size:0.95rem; color:#374151; margin-bottom:1rem;">
+            <div style="font-size:0.95rem; color:#374151; margin-bottom:1rem; padding:0.5rem 0;">
                 🕐 ${event.time}
             </div>
             
             <!-- Row 5: Join Button -->
-            <button class="btn btn-secondary" style="width:100%; padding:0.75rem 1rem; font-size:0.95rem;" aria-label="Join ${escapeHtml(event.title)}">
+            <button class="btn btn-secondary" style="width:100%; padding:0.75rem 1rem; font-size:0.95rem; margin-top:0.5rem;" aria-label="Join ${escapeHtml(event.title)}">
                 ✋ Join Squad
             </button>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // ===== Weather Data =====
