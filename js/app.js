@@ -222,26 +222,74 @@ function renderEvents() {
  * In production, integrate with OpenWeatherMap, WeatherAPI, etc.
  */
 function updateWeatherDisplay() {
-    // Mock weather data (replace with real API call)
-    const weatherData = {
-        // Converted to metric: °C, km/h, meters
-        temp: '22°C',
-        wind: '19 km/h',
-        waves: '0.6–0.9 m',
-        uv: '6 (High)',
-    };
+    // Fetch the 4-day forecast from NEA / data.gov.sg
+    // Endpoint: https://api.data.gov.sg/v1/environment/4-day-weather-forecast
+    const url = 'https://api.data.gov.sg/v1/environment/4-day-weather-forecast';
 
-    const tempValue = document.getElementById('tempValue');
-    const windValue = document.getElementById('windValue');
-    const waveValue = document.getElementById('waveValue');
-    const uvValue = document.getElementById('uvValue');
+    // Render a loading state
+    const weatherGrid = document.getElementById('weatherGrid');
+    if (weatherGrid) {
+        weatherGrid.innerHTML = '<p style="text-align:center; width:100%">Loading forecast...</p>';
+    }
 
-    if (tempValue) tempValue.textContent = weatherData.temp;
-    if (windValue) windValue.textContent = weatherData.wind;
-    if (waveValue) waveValue.textContent = weatherData.waves;
-    if (uvValue) uvValue.textContent = weatherData.uv;
+    fetch(url)
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
+        .then(data => {
+            const items = data.items || [];
+            if (items.length === 0) throw new Error('No forecast data available');
+            const forecasts = items[0].forecasts || [];
+            renderForecasts(forecasts);
+        })
+        .catch(err => {
+            console.error('Weather API error:', err);
+            if (weatherGrid) {
+                weatherGrid.innerHTML = '<p style="text-align:center; color:#DC2626">Could not load forecast. Please try again later.</p>';
+            }
+        });
+}
 
-    console.log('🌤️ Weather updated:', weatherData);
+/**
+ * Render the NEA 4-day forecasts into the weather grid
+ * @param {Array} forecasts
+ */
+function renderForecasts(forecasts) {
+    const weatherGrid = document.getElementById('weatherGrid');
+    if (!weatherGrid) return;
+
+    // Build cards for each forecast day
+    const html = forecasts.map(f => {
+        const date = f.date || '';
+        const forecastText = f.forecast || '-';
+        const tempLow = f.temperature && f.temperature.low != null ? `${f.temperature.low}°C` : '-';
+        const tempHigh = f.temperature && f.temperature.high != null ? `${f.temperature.high}°C` : '-';
+        const windLow = f.wind && f.wind.speed && f.wind.speed.low != null ? `${f.wind.speed.low} km/h` : '-';
+        const windHigh = f.wind && f.wind.speed && f.wind.speed.high != null ? `${f.wind.speed.high} km/h` : '-';
+        const humidityLow = f.relative_humidity && f.relative_humidity.low != null ? `${f.relative_humidity.low}%` : '-';
+        const humidityHigh = f.relative_humidity && f.relative_humidity.high != null ? `${f.relative_humidity.high}%` : '-';
+
+        return `
+            <div class="weather-card" role="article" aria-label="Forecast for ${date}">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <h3 style="margin:0; font-size:1.1rem;">${date}</h3>
+                        <p style="margin:0.25rem 0 0 0; font-weight:600;">${escapeHtml(forecastText)}</p>
+                    </div>
+                    <div style="text-align:right; min-width:110px;">
+                        <div style="font-weight:700;">${tempHigh} / ${tempLow}</div>
+                        <div style="font-size:0.9rem; color:#374151;">Wind: ${windLow}–${windHigh}</div>
+                    </div>
+                </div>
+                <div style="margin-top:0.75rem; font-size:0.9rem; color:#6B7280;">
+                    Humidity: ${humidityLow} – ${humidityHigh}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    weatherGrid.innerHTML = html;
 }
 
 // ===== Mobile Navigation =====
